@@ -7,12 +7,39 @@
         <variable
             name="TabValue"
             type="com.example.ethan.tabapp.TabValue" />
+        <import type="android.view.View"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.example.ethan.tabapp.MainActivity">
+
+        <TextView
+            android:id="@+id/currentTab"
+            android:layout_width="167dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="32dp"
+            android:textAlignment="center"
+            android:text="@{TabValue.currentTabString.get()}"
+            android:textSize="36sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/pendingTab"
+            android:layout_width="288dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:text="@{TabValue.pendingTabString.get()}"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="24sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonBPaid" />
 
         <Button
             android:id="@+id/buttonEnter"
@@ -41,32 +68,6 @@
             android:textSize="20sp"
             app:layout_constraintLeft_toRightOf="@+id/buttonZero"
             app:layout_constraintTop_toBottomOf="@+id/buttonThree" />
-
-        <TextView
-            android:id="@+id/currentTab"
-            android:layout_width="167dp"
-            android:layout_height="61dp"
-            android:layout_marginTop="32dp"
-            android:textAlignment="center"
-            android:text="@{TabValue.currentTabString.get()}"
-            android:textSize="36sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/pendingTab"
-            android:layout_width="288dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:text="@{TabValue.pendingTabString.get()}"
-            android:textAlignment="center"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="24sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonBPaid" />
 
         <Button
             android:id="@+id/buttonFour"
@@ -231,7 +232,29 @@
             android:layout_marginRight="32dp"
             app:layout_constraintRight_toRightOf="parent" />
 
+        <TextView
+            android:id="@+id/textViewA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility="@{TabValue.AOwesMoney.get() ? View.VISIBLE : View.GONE}"
+            android:text="Ethan owes Grace"
+            android:textColor="@color/color_blue"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/textViewB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Grace owes Ethan"
+            android:visibility="@{TabValue.BOwesMoney.get() ? View.VISIBLE : View.GONE}"
+            android:textColor="@color/color_yellow"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

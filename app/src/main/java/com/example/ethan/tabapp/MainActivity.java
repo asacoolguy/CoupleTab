@@ -104,6 +104,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tabValue.onEnterClick();
+                if (tabValue.AOwesMoney.get()){
+                    binding.currentTab.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_blue));
+                }
+                else if (tabValue.BOwesMoney.get()){
+                    binding.currentTab.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_yellow));
+                }
             }
         });
         binding.buttonAPaid.setOnClickListener(new View.OnClickListener() {

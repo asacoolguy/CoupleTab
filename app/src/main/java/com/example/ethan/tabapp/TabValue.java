@@ -19,6 +19,8 @@ public class TabValue{
     public ObservableField<String> currentTabString;
     public ObservableField<String> pendingTabString;
     public ObservableField<Integer> pendingDirection; // A paying = pos. B paying = neg.
+    public ObservableField<Boolean> AOwesMoney;
+    public ObservableField<Boolean> BOwesMoney;
 
     public TabValue(){
         currentTab = 0.0;
@@ -26,6 +28,10 @@ public class TabValue{
         decimalFormat = new DecimalFormat("#.##");
         pendingDirection = new ObservableField<Integer>();
         pendingDirection.set(1);
+        AOwesMoney = new ObservableField<Boolean>();
+        AOwesMoney.set(false);
+        BOwesMoney = new ObservableField<Boolean>();
+        BOwesMoney.set(false);
 
         currentTabString = new ObservableField<String>();
         currentTabString.set("0");
@@ -68,7 +74,17 @@ public class TabValue{
     public void onEnterClick(){
         if (pendingTab != 0){
             currentTab = currentTab + pendingDirection.get() * pendingTab;
-            currentTabString.set(decimalFormat.format(currentTab));
+            if (currentTab > 0){
+                AOwesMoney.set(true);
+                BOwesMoney.set(false);
+                currentTabString.set(decimalFormat.format(currentTab));
+            }
+            else{
+                BOwesMoney.set(true);
+                AOwesMoney.set(false);
+                currentTabString.set(decimalFormat.format(-1 * currentTab));
+            }
+
 
             pendingTab = 0;
             pendingTabString.set("");
