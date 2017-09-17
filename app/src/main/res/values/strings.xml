@@ -2,4 +2,6 @@
     <string name="app_name">Tab app</string>
     <string name="edit_message">Edit a Message!</string>
     <string name="button_send">Send</string>
+    <string name="currentTabValue">currentTabValue</string>
+    <string name="currentTabValue_default">0</string>
 </resources>

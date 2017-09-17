@@ -1,6 +1,8 @@
 package com.example.ethan.tabapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,9 +23,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        // initialize process to save value
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPref.edit();
+        String currentTabValue_default = getResources().getString(R.string.currentTabValue_default);
 
-        // for now just set currentTab as 0. this should be read in later.
+        // load saved values
         tabValue = new TabValue();
+        String oldCurrentTabValue = sharedPref.getString(getString(R.string.currentTabValue),
+                currentTabValue_default);
+        tabValue.loadCurrentTabValue(oldCurrentTabValue);
+        if (tabValue.AOwesMoney.get()){
+            binding.currentTab.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_blue));
+        }
+        else if (tabValue.BOwesMoney.get()){
+            binding.currentTab.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_yellow));
+        }
 
         binding.setTabValue(tabValue);
 
@@ -104,12 +119,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tabValue.onEnterClick();
+                // change color of the currentTab
                 if (tabValue.AOwesMoney.get()){
                     binding.currentTab.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_blue));
                 }
                 else if (tabValue.BOwesMoney.get()){
                     binding.currentTab.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_yellow));
                 }
+                // save values
+                editor.putString(getString(R.string.currentTabValue), tabValue.currentTabString.get());
+                editor.apply();
             }
         });
         binding.buttonAPaid.setOnClickListener(new View.OnClickListener() {

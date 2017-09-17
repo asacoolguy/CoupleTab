@@ -17,15 +17,16 @@
 
         <TextView
             android:id="@+id/currentTab"
-            android:layout_width="167dp"
-            android:layout_height="61dp"
+            android:layout_width="120dp"
+            android:layout_height="63dp"
             android:layout_marginTop="32dp"
             android:textAlignment="center"
             android:text="@{TabValue.currentTabString.get()}"
             android:textSize="36sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="162dp" />
 
         <TextView
             android:id="@+id/pendingTab"
@@ -237,24 +238,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="0dp"
             android:visibility="@{TabValue.AOwesMoney.get() ? View.VISIBLE : View.GONE}"
-            android:text="Ethan owes Grace"
+            android:text="Ethan owes Money"
             android:textColor="@color/color_blue"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/currentTab"
+            app:layout_constraintRight_toLeftOf="@+id/currentTab"
+            android:layout_marginRight="8dp" />
 
         <TextView
             android:id="@+id/textViewB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Grace owes Ethan"
+            android:layout_marginTop="0dp"
+            android:text="Grace owes Money"
             android:visibility="@{TabValue.BOwesMoney.get() ? View.VISIBLE : View.GONE}"
             android:textColor="@color/color_yellow"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/currentTab"
+            app:layout_constraintLeft_toRightOf="@+id/currentTab"
+            android:layout_marginLeft="8dp" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

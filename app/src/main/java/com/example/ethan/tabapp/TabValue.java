@@ -39,6 +39,18 @@ public class TabValue{
         pendingTabString.set("");
     }
 
+    // method to load input into currentTab
+    public void loadCurrentTabValue(String s){
+        currentTabString.set(s);
+        currentTab = Double.parseDouble(s);
+        if (currentTab > 0){
+            AOwesMoney.set(true);
+        }
+        else{
+            BOwesMoney.set(true);
+        }
+    }
+
     // method to handle when a number button gets clicked. updates the pendingValue.
     public void onNumberClick(int i) {
         if (pendingTab == 0.0 && i == 0) {
@@ -73,7 +85,7 @@ public class TabValue{
     // adds the pendingTab to the tab and resets pendingTab
     public void onEnterClick(){
         if (pendingTab != 0){
-            currentTab = currentTab + pendingDirection.get() * pendingTab;
+            currentTab = currentTab + (pendingDirection.get() * pendingTab) / 2.0;
             if (currentTab > 0){
                 AOwesMoney.set(true);
                 BOwesMoney.set(false);
