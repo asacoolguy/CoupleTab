@@ -4,4 +4,7 @@
     <string name="button_send">Send</string>
     <string name="currentTabValue">currentTabValue</string>
     <string name="currentTabValue_default">0</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

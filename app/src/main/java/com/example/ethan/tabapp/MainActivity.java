@@ -15,138 +15,48 @@ import com.example.ethan.tabapp.databinding.ActivityMainBinding;
 import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
+    //private ActivityMainBinding binding;
     private TabValue tabValue;
-
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        // initialize process to save value
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = sharedPref.edit();
-        String currentTabValue_default = getResources().getString(R.string.currentTabValue_default);
+        setContentView(R.layout.activity_main);
 
+        // initialize process to save value
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        String currentTabValue_default = getResources().getString(R.string.currentTabValue_default);
         // load saved values
         tabValue = new TabValue();
         String oldCurrentTabValue = sharedPref.getString(getString(R.string.currentTabValue),
                 currentTabValue_default);
         tabValue.loadCurrentTabValue(oldCurrentTabValue);
-        if (tabValue.AOwesMoney.get()){
-            binding.currentTab.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_blue));
-        }
-        else if (tabValue.BOwesMoney.get()){
-            binding.currentTab.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_yellow));
-        }
 
-        binding.setTabValue(tabValue);
-
-        // set onClick methods for buttons
-        binding.buttonZero.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onNumberClick(0);
+        if (findViewById(R.id.fragment_container) != null) {
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
             }
-        });
-        binding.buttonOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onNumberClick(1);
-            }
-        });
-        binding.buttonTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onNumberClick(2);
-            }
-        });
-        binding.buttonThree.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onNumberClick(3);
-            }
-        });
-        binding.buttonFour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onNumberClick(4);
-            }
-        });
-        binding.buttonFive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onNumberClick(5);
-            }
-        });
-        binding.buttonSix.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onNumberClick(6);
-            }
-        });
-        binding.buttonSeven.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onNumberClick(7);
-            }
-        });
-        binding.buttonEight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onNumberClick(8);
-            }
-        });
-        binding.buttonNine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onNumberClick(9);
-            }
-        });
-        binding.buttonDecimal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onDecimalClick();
-            }
-        });
-        binding.buttonBackspace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onDeleteClick();
-            }
-        });
-        binding.buttonEnter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.onEnterClick();
-                // change color of the currentTab
-                if (tabValue.AOwesMoney.get()){
-                    binding.currentTab.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_blue));
-                }
-                else if (tabValue.BOwesMoney.get()){
-                    binding.currentTab.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.color_yellow));
-                }
-                // save values
-                editor.putString(getString(R.string.currentTabValue), tabValue.currentTabString.get());
-                editor.apply();
-            }
-        });
-        binding.buttonAPaid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.pendingDirection.set(1);
-                binding.buttonAPaid.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.color_yellow));
-                binding.buttonBPaid.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.color_grey));
+            CalculatorFragment firstFragment = new CalculatorFragment();
+            // pass the Intent's extras to the fragment as arguments
+            firstFragment.setArguments(getIntent().getExtras());
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, firstFragment).commit();
         }
-        });
-        binding.buttonBPaid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tabValue.pendingDirection.set(-1);
-                binding.buttonAPaid.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.color_grey));
-                binding.buttonBPaid.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.color_blue));
-            }
-        });
+    }
+
+    public TabValue GetTabValue(){
+        return tabValue;
+    }
+
+    public void SaveTabValue(){
+        final SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.currentTabValue), tabValue.currentTabString.get());
+        editor.apply();
     }
 
 

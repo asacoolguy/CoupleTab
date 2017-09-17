@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="TabValue"
+            type="com.example.ethan.tabapp.TabValue" />
+        <import type="android.view.View"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/currentTab"
+            android:layout_width="167dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="32dp"
+            android:textAlignment="center"
+            android:text="@{TabValue.currentTabString.get()}"
+            android:textSize="36sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/pendingTab"
+            android:layout_width="288dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:text="@{TabValue.pendingTabString.get()}"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="24sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonBPaid" />
+
+        <Button
+            android:id="@+id/buttonEnter"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="228dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/color_green"
+            android:text="Enter"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toRightOf="@+id/buttonDecimal"
+            app:layout_constraintTop_toBottomOf="@+id/buttonZero" />
+
+        <Button
+            android:id="@+id/buttonBackspace"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/color_red"
+            android:text="Delete"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toRightOf="@+id/buttonZero"
+            app:layout_constraintTop_toBottomOf="@+id/buttonThree" />
+
+        <Button
+            android:id="@+id/buttonFour"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:text="4"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSeven"
+            app:layout_constraintRight_toLeftOf="@+id/buttonFive"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/buttonSix"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:text="6"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toRightOf="@+id/buttonFive"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/buttonNine"
+            android:layout_marginStart="8dp" />
+
+        <Button
+            android:id="@+id/buttonOne"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="1"
+            android:textSize="20sp"
+            app:layout_constraintRight_toLeftOf="@+id/buttonTwo"
+            app:layout_constraintTop_toBottomOf="@+id/buttonFour"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/buttonTwo"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:text="2"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonFive" />
+
+        <Button
+            android:id="@+id/buttonThree"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:text="3"
+            android:textSize="20sp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSix"
+            app:layout_constraintLeft_toRightOf="@+id/buttonTwo"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp" />
+
+        <Button
+            android:id="@+id/buttonZero"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:text="0"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/buttonTwo" />
+
+        <Button
+            android:id="@+id/buttonDecimal"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:text="."
+            android:textSize="20sp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/buttonOne"
+            app:layout_constraintRight_toLeftOf="@+id/buttonZero"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/buttonFive"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:text="5"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/buttonEight" />
+
+        <Button
+            android:id="@+id/buttonNine"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="8dp"
+            android:text="9"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toRightOf="@+id/buttonEight"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/pendingTab"
+            android:layout_marginStart="8dp" />
+
+        <Button
+            android:id="@+id/buttonEight"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:text="8"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pendingTab" />
+
+        <Button
+            android:id="@+id/buttonSeven"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="110dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:text="7"
+            android:textSize="20sp"
+            app:layout_constraintRight_toLeftOf="@+id/buttonEight"
+            app:layout_constraintTop_toBottomOf="@+id/pendingTab" />
+
+        <Button
+            android:id="@+id/buttonAPaid"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="32dp"
+            android:background="@color/color_yellow"
+            android:text="Grace paid"
+            app:layout_constraintTop_toBottomOf="@+id/currentTab"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="32dp" />
+
+        <Button
+            android:id="@+id/buttonBPaid"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="32dp"
+            android:background="@color/color_grey"
+            android:text="Ethan paid"
+            app:layout_constraintTop_toBottomOf="@+id/currentTab"
+            android:layout_marginRight="32dp"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:visibility="@{TabValue.AOwesMoney.get() ? View.VISIBLE : View.GONE}"
+            android:text="Ethan owes money"
+            android:textColor="@color/color_blue"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Grace owes money"
+            android:visibility="@{TabValue.BOwesMoney.get() ? View.VISIBLE : View.GONE}"
+            android:textColor="@color/color_yellow"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
