@@ -1,52 +1,167 @@
 package com.example.ethan.tabapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.databinding.DataBindingUtil;
-import android.support.v4.content.ContextCompat;
+import android.content.res.Configuration;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.example.ethan.tabapp.databinding.ActivityMainBinding;
-
-import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
-    //private ActivityMainBinding binding;
     private TabValue tabValue;
     private SharedPreferences sharedPref;
+    // navigation drawer variables
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private String mActivityTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // initialize process to save value
+        // Initialize navigation drawer variables
+        addDrawerItems(savedInstanceState);
+        setupDrawer();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        // Access sharedPref for saving and loading values
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         String currentTabValue_default = getResources().getString(R.string.currentTabValue_default);
-        // load saved values
+        // load saved values into tabValue
         tabValue = new TabValue();
         String oldCurrentTabValue = sharedPref.getString(getString(R.string.currentTabValue),
                 currentTabValue_default);
         tabValue.loadCurrentTabValue(oldCurrentTabValue);
 
+        Log.d("myTag", "initializing in onCreate");
+
+        // initialize the fragment in position 0 of the navigation drawer, aka the calculator
+        loadFragment(savedInstanceState, 0, true);
+    }
+
+    // helper function that loads fragments onto the main activity screen
+    private void loadFragment(Bundle savedInstanceState, int position, boolean initialization){
+        Log.d("myTag", "loadFragment going to load fragment " + String.valueOf(position));
         if (findViewById(R.id.fragment_container) != null) {
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
             if (savedInstanceState != null) {
                 return;
             }
-            CalculatorFragment firstFragment = new CalculatorFragment();
-            // pass the Intent's extras to the fragment as arguments
-            firstFragment.setArguments(getIntent().getExtras());
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, firstFragment).commit();
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            Fragment newFragment;
+            switch(position){
+                default:
+                case 0:
+                    newFragment = new CalculatorFragment();
+                    break;
+                case 1:
+                    newFragment = new HistoryFragment();
+                    break;
+            }
+            newFragment.setArguments(getIntent().getExtras());
+            if (initialization == true){
+                transaction.add(R.id.fragment_container, newFragment);
+            }
+            else{
+                transaction.replace(R.id.fragment_container, newFragment);
+                transaction.addToBackStack(null);
+            }
+            transaction.commit();
         }
+    }
+
+    // helper function that sets up the navigation drawer and its items
+    private void addDrawerItems(final Bundle savedInstanceState){
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        ListView mDrawerList = (ListView)findViewById(R.id.left_drawer);
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawyer_list_item,
+                getResources().getStringArray(R.array.navigation_drawer_items)));
+        mActivityTitle = getTitle().toString();
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                Log.d("myTag", "item click detected. loading fragment " + String.valueOf(position));
+                loadFragment(savedInstanceState, position, false);
+                mDrawerLayout.closeDrawers();
+            }
+        });
+    }
+
+    // helper function that sets up the ActionBarDrawerToggle object
+    private void setupDrawer(){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.string.drawer_open, R.string.drawer_close){
+            public void onDrawerOpened(View drawerView){
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle("Menu");
+                invalidateOptionsMenu(); // calls onPrepareOptionsMenu
+            }
+
+            public void onDrawerClosed(View drawerView){
+                super.onDrawerClosed(drawerView);
+                getSupportActionBar().setTitle(mActivityTitle);
+                invalidateOptionsMenu(); // calls onPrepareOptionsMenu
+            }
+        };
+
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+    }
+
+    // makes sure the hamburger menu icon updates appropriately when the drawer opens/closes
+    @Override
+    public void onPostCreate(Bundle savedInstanceState){
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    // makes sure the hamburger menu icon updates appropriately when configuration changes
+    // i.e. portrait to landscape mode
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        //if (id == R.id.action_settings) {
+            //return true;
+        //}
+
+        // Activate the navigation drawer toggle
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /* Called whenever we call invalidateOptionsMenu() */
+    // TODO: edit this when you implement options menu
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        //boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     public TabValue GetTabValue(){

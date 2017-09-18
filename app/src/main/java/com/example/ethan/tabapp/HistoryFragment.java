@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.ethan.tabapp.databinding.CalculatorFragmentBinding;
 import com.example.ethan.tabapp.databinding.HistoryFragmentBinding;
@@ -33,7 +34,7 @@ public class HistoryFragment extends Fragment {
         binding.testButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tabValue.onNumberClick(0);
+                Toast.makeText(getActivity(), "Button pressed", Toast.LENGTH_SHORT).show();
             }
         });
 
