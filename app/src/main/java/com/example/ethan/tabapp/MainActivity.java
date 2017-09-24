@@ -17,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
     private TabValue tabValue;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
+
+    private ArrayList<TabEntry> entries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +50,15 @@ public class MainActivity extends AppCompatActivity {
                 currentTabValue_default);
         tabValue.loadCurrentTabValue(oldCurrentTabValue);
 
-        Log.d("myTag", "initializing in onCreate");
-
         // initialize the fragment in position 0 of the navigation drawer, aka the calculator
         loadFragment(savedInstanceState, 0, true);
+
+        entries = new ArrayList<TabEntry>();
+        entries.add(new TabEntry("today", "comment", "$30", true));
     }
 
     // helper function that loads fragments onto the main activity screen
     private void loadFragment(Bundle savedInstanceState, int position, boolean initialization){
-        Log.d("myTag", "loadFragment going to load fragment " + String.valueOf(position));
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) {
                 return;
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
             newFragment.setArguments(getIntent().getExtras());
-            if (initialization == true){
+            if (initialization){
                 transaction.add(R.id.fragment_container, newFragment);
             }
             else{
@@ -94,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                Log.d("myTag", "item click detected. loading fragment " + String.valueOf(position));
                 loadFragment(savedInstanceState, position, false);
                 mDrawerLayout.closeDrawers();
             }
@@ -166,6 +169,14 @@ public class MainActivity extends AppCompatActivity {
 
     public TabValue GetTabValue(){
         return tabValue;
+    }
+
+    public ArrayList<TabEntry> GetTabEntries(){
+        return entries;
+    }
+
+    public void AddNewTabEntry(String dt, String c, String a, boolean p){
+        entries.add(new TabEntry(dt, c, a, p));
     }
 
     public void SaveTabValue(){

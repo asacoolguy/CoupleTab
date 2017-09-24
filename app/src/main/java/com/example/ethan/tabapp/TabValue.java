@@ -97,7 +97,6 @@ public class TabValue{
                 currentTabString.set(decimalFormat.format(-1 * currentTab));
             }
 
-
             pendingTab = 0;
             pendingTabString.set("");
         }

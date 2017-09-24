@@ -1,14 +1,21 @@
 package com.example.ethan.tabapp;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.ethan.tabapp.databinding.CalculatorFragmentBinding;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
+import com.example.ethan.tabapp.databinding.CalculatorFragmentBinding;
+import java.util.Calendar;
 
 /**
  * Created by Ethan on 9/16/2017.
@@ -95,7 +102,7 @@ public class CalculatorFragment extends Fragment {
                 tabValue.onDecimalClick();
             }
         });
-        binding.buttonBackspace.setOnClickListener(new View.OnClickListener() {
+        binding.buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tabValue.onDeleteClick();
@@ -104,7 +111,21 @@ public class CalculatorFragment extends Fragment {
         binding.buttonEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // adds the entry to the entry arrayList
+                // first get the display of the current time
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("MM-dd h:mm a");
+                String dt = df.format(c.getTime());
+                // determine who paid for this entry. default is false aka B paid
+                Boolean p = false;
+                if (tabValue.pendingDirection.get() == -1){
+                    p = true;
+                }
+                // asks main activity to add this to the tab entry list
+                ((MainActivity)getActivity()).AddNewTabEntry(dt, binding.calculatorComment.getText().toString(), tabValue.pendingTabString.get(), p);
+                // does the math and saves the result to sharedPref
                 tabValue.onEnterClick();
+                ((MainActivity)getActivity()).SaveTabValue();
                 // change color of the currentTab
                 if (tabValue.AOwesMoney.get()){
                     binding.currentTab.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_blue));
@@ -112,24 +133,30 @@ public class CalculatorFragment extends Fragment {
                 else if (tabValue.BOwesMoney.get()){
                     binding.currentTab.setTextColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_yellow));
                 }
-                // save values
-                ((MainActivity)getActivity()).SaveTabValue();
+
+                binding.calculatorComment.setText("");
             }
         });
         binding.buttonAPaid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tabValue.pendingDirection.set(1);
-                binding.buttonAPaid.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_yellow));
-                binding.buttonBPaid.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_grey));
+                setABPaidButtonColor();
             }
         });
         binding.buttonBPaid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tabValue.pendingDirection.set(-1);
-                binding.buttonAPaid.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_grey));
-                binding.buttonBPaid.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_blue));
+                setABPaidButtonColor();
+            }
+        });
+        binding.calculatorComment.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(binding.calculatorComment.getWindowToken(), 0);
+                return true;
             }
         });
 
@@ -141,5 +168,23 @@ public class CalculatorFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        setABPaidButtonColor();
+    }
+
+    // helper function that sets the colors of the APaid and BPaid buttons accordingly to pendingDirection
+    private void setABPaidButtonColor(){
+        if (tabValue.pendingDirection.get() == 1){
+            binding.buttonAPaid.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_yellow));
+            binding.buttonBPaid.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_grey));
+        }
+        else{
+            binding.buttonAPaid.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_grey));
+            binding.buttonBPaid.setBackgroundColor(ContextCompat.getColor(getActivity().getApplicationContext(), R.color.color_blue));
+        }
     }
 }
