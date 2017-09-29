@@ -16,8 +16,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
+import android.database.sqlite.*;
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private String mActivityTitle;
 
     private ArrayList<TabEntry> entries;
+    private DBManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +54,17 @@ public class MainActivity extends AppCompatActivity {
 
         // initialize the fragment in position 0 of the navigation drawer, aka the calculator
         loadFragment(savedInstanceState, 0, true);
+        // initialize sqlite database
+        dbManager = new DBManager(this);
 
-        entries = new ArrayList<TabEntry>();
-        entries.add(new TabEntry("today", "comment", "$30", true));
+        dbManager.open();
+        Log.d("myTag", "database initial insertion done");
+    }
+
+    @Override
+    protected void onDestroy() {
+        dbManager.close();
+        super.onDestroy();
     }
 
     // helper function that loads fragments onto the main activity screen
@@ -170,6 +180,8 @@ public class MainActivity extends AppCompatActivity {
     public TabValue GetTabValue(){
         return tabValue;
     }
+
+    public DBManager GetDBManager(){ return dbManager; }
 
     public ArrayList<TabEntry> GetTabEntries(){
         return entries;

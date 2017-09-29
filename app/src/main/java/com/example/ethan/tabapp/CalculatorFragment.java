@@ -2,11 +2,11 @@ package com.example.ethan.tabapp;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,18 +111,20 @@ public class CalculatorFragment extends Fragment {
         binding.buttonEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // adds the entry to the entry arrayList
-                // first get the display of the current time
+                // adds the entry to the database
                 Calendar c = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("MM-dd h:mm a");
-                String dt = df.format(c.getTime());
-                // determine who paid for this entry. default is false aka B paid
-                Boolean p = false;
-                if (tabValue.pendingDirection.get() == -1){
-                    p = true;
-                }
-                // asks main activity to add this to the tab entry list
-                ((MainActivity)getActivity()).AddNewTabEntry(dt, binding.calculatorComment.getText().toString(), tabValue.pendingTabString.get(), p);
+                SimpleDateFormat dateTimeFormat = new SimpleDateFormat("MM-dd h:mm a");
+                String dateTimeString = dateTimeFormat.format(c.getTime());
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH) + 1;
+                Log.d("myTag","new entry added. year is " + String.valueOf(year) + ". month is " + String.valueOf(month));
+
+                ((MainActivity)getActivity()).GetDBManager().insert(year,
+                        month,
+                        dateTimeString,
+                        binding.calculatorComment.getText().toString(),
+                        tabValue.pendingTab,
+                        tabValue.pendingDirection.get());
                 // does the math and saves the result to sharedPref
                 tabValue.onEnterClick();
                 ((MainActivity)getActivity()).SaveTabValue();

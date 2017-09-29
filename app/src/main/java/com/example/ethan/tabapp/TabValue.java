@@ -13,8 +13,8 @@ import java.text.DecimalFormat;
  */
 
 public class TabValue{
-    private double currentTab;
-    private double pendingTab;
+    public double currentTab;
+    public double pendingTab;
     private DecimalFormat decimalFormat;
     public ObservableField<String> currentTabString;
     public ObservableField<String> pendingTabString;
