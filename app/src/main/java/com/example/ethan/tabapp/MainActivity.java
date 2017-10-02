@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
 
-    private ArrayList<TabEntry> entries;
     private DBManager dbManager;
 
     @Override
@@ -56,8 +55,11 @@ public class MainActivity extends AppCompatActivity {
         loadFragment(savedInstanceState, 0, true);
         // initialize sqlite database
         dbManager = new DBManager(this);
-
         dbManager.open();
+
+        //dbManager.insert(2016, "December", "12-25 3PM", "xmas", 40.0, 1);
+        //dbManager.insert(2015, "November", "11-24 5PM", "thanksgiving turkey", 30.0, -1);
+        //dbManager.insert(2016, "April", "4-1 10AM", "april fools!", 10.0, 1);
         Log.d("myTag", "database initial insertion done");
     }
 
@@ -183,18 +185,16 @@ public class MainActivity extends AppCompatActivity {
 
     public DBManager GetDBManager(){ return dbManager; }
 
-    public ArrayList<TabEntry> GetTabEntries(){
-        return entries;
-    }
-
-    public void AddNewTabEntry(String dt, String c, String a, boolean p){
-        entries.add(new TabEntry(dt, c, a, p));
-    }
-
     public void SaveTabValue(){
         final SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.currentTabValue), tabValue.currentTabString.get());
         editor.apply();
+    }
+
+    static public String convertMonthToString(int month){
+        String monthString = "";
+        // TODO insert to switch syntax
+        return monthString;
     }
 
 

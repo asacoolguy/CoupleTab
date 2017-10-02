@@ -40,7 +40,7 @@ public class TabEntryDBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES = "CREATE TABLE " + TABLE_NAME + " (" +
                     _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COLUMN_NAME_YEAR + " INTEGER," +
-                    COLUMN_NAME_MONTH + " INTEGER," +
+                    COLUMN_NAME_MONTH + " TEXT," +
                     COLUMN_NAME_DATETIME + " TEXT," +
                     COLUMN_NAME_AMOUNT + " FLOAT," +
                     COLUMN_NAME_COMMENT + " TEXT," +

@@ -36,7 +36,7 @@ public class DBManager {
         databaseOpened = false;
     }
 
-    public void insert(int year, int month, String dateTime, String comment, double amount, int APaid){
+    public void insert(int year, String month, String dateTime, String comment, double amount, int APaid){
         if (databaseOpened){
             ContentValues value = new ContentValues();
             value.put(dbHelper.COLUMN_NAME_YEAR, year);

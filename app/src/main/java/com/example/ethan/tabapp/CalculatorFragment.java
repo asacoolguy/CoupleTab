@@ -117,10 +117,11 @@ public class CalculatorFragment extends Fragment {
                 String dateTimeString = dateTimeFormat.format(c.getTime());
                 int year = c.get(Calendar.YEAR);
                 int month = c.get(Calendar.MONTH) + 1;
+                String monthString = MainActivity.convertMonthToString(month);
                 Log.d("myTag","new entry added. year is " + String.valueOf(year) + ". month is " + String.valueOf(month));
 
                 ((MainActivity)getActivity()).GetDBManager().insert(year,
-                        month,
+                        monthString,
                         dateTimeString,
                         binding.calculatorComment.getText().toString(),
                         tabValue.pendingTab,
