@@ -57,9 +57,12 @@ public class MainActivity extends AppCompatActivity {
         dbManager = new DBManager(this);
         dbManager.open();
 
-        //dbManager.insert(2016, "December", "12-25 3PM", "xmas", 40.0, 1);
-        //dbManager.insert(2015, "November", "11-24 5PM", "thanksgiving turkey", 30.0, -1);
-        //dbManager.insert(2016, "April", "4-1 10AM", "april fools!", 10.0, 1);
+        dbManager.insert(2015, 10, "2015-11-24 5PM", "thanksgiving turkey", 30.0, -1);
+        dbManager.insert(2016, 3, "2016-4-1 10AM", "april fools!", 10.0, 1);
+        dbManager.insert(2016, 11, "2016-12-25 3PM", "xmas", 40.0, 1);
+        dbManager.insert(2017, 8, "2017-9-13 3PM", "flight to europe", 112.0, 1);
+        //dbManager.insert(2017, 9, "2017-10-1 3PM", "gelato", 12.0, 1);
+        //dbManager.insert(2017, 9, "2017-10-3 2PM", "groceries", 23.0, -1);
         Log.d("myTag", "database initial insertion done");
     }
 
@@ -190,13 +193,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(getString(R.string.currentTabValue), tabValue.currentTabString.get());
         editor.apply();
     }
-
-    static public String convertMonthToString(int month){
-        String monthString = "";
-        // TODO insert to switch syntax
-        return monthString;
-    }
-
 
 }
 

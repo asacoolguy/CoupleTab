@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 /**
  * Created by Ethan on 9/26/2017.
@@ -26,7 +27,7 @@ public class DBManager {
     public DBManager open() throws SQLException{
         dbHelper = new TabEntryDBHelper(context);
         database = dbHelper.getWritableDatabase();
-        //dbHelper.onUpgrade(database,0,1);
+        dbHelper.onUpgrade(database,0,1);
         databaseOpened = true;
         return this;
     }
@@ -36,7 +37,7 @@ public class DBManager {
         databaseOpened = false;
     }
 
-    public void insert(int year, String month, String dateTime, String comment, double amount, int APaid){
+    public void insert(int year, int month, String dateTime, String comment, double amount, int APaid){
         if (databaseOpened){
             ContentValues value = new ContentValues();
             value.put(dbHelper.COLUMN_NAME_YEAR, year);
@@ -46,6 +47,8 @@ public class DBManager {
             value.put(dbHelper.COLUMN_NAME_AMOUNT, amount);
             value.put(dbHelper.COLUMN_NAME_APAID, APaid);
             database.insert(dbHelper.TABLE_NAME, null, value);
+
+            Log.d("myTag", "inserting with dbmanager, month is " + month + ", comment is " + comment);
         }
     }
 

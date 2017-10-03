@@ -113,15 +113,12 @@ public class CalculatorFragment extends Fragment {
             public void onClick(View view) {
                 // adds the entry to the database
                 Calendar c = Calendar.getInstance();
-                SimpleDateFormat dateTimeFormat = new SimpleDateFormat("MM-dd h:mm a");
+                SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd h:mm a");
                 String dateTimeString = dateTimeFormat.format(c.getTime());
                 int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH) + 1;
-                String monthString = MainActivity.convertMonthToString(month);
-                Log.d("myTag","new entry added. year is " + String.valueOf(year) + ". month is " + String.valueOf(month));
-
+                int month = c.get(Calendar.MONTH);
                 ((MainActivity)getActivity()).GetDBManager().insert(year,
-                        monthString,
+                        month,
                         dateTimeString,
                         binding.calculatorComment.getText().toString(),
                         tabValue.pendingTab,
