@@ -1,276 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <variable
-            name="TabValue"
-            type="com.example.ethan.tabapp.TabValue" />
-        <import type="android.view.View"/>
-    </data>
+    <TextView
+        android:id="@+id/textView_currentTab"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_marginTop="48dp"
+        android:text="$0"
+        android:textAlignment="center"
+        android:textSize="50sp"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonAPaid"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="48dp"
+        android:background="@color/color_yellow"
+        android:text="Grace paid"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_currentTab"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <Button
+        android:id="@+id/buttonBPaid"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="48dp"
+        android:background="@color/color_grey"
+        android:text="Ethan paid"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_currentTab"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <TextView
+        android:id="@+id/textView_BOwesMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Ethan owes money"
+        android:textColor="@color/color_blue"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_AOwesMoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Grace owes money"
+        android:textColor="@color/color_yellow"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAPaid"
+        android:layout_marginRight="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:focusableInTouchMode="true">
 
-        <TextView
-            android:id="@+id/currentTab"
-            android:layout_width="167dp"
-            android:layout_height="61dp"
-            android:layout_marginTop="32dp"
-            android:textAlignment="center"
-            android:text="@{TabValue.currentTabString.get()}"
-            android:textSize="36sp"
+        <View
+            android:id="@+id/calculator_background"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentTop="true"
+            android:background="#DDDDDD"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/pendingTab"
-            android:layout_width="288dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:text="@{TabValue.pendingTabString.get()}"
-            android:textAlignment="center"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="24sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonBPaid" />
-
-        <Button
-            android:id="@+id/buttonEnter"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="228dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/color_green"
-            android:text="Enter"
-            android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@+id/calculator_comment"
-            android:layout_marginRight="32dp"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <Button
-            android:id="@+id/buttonDelete"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/color_red"
-            android:text="Delete"
-            android:textSize="20sp"
-            app:layout_constraintLeft_toRightOf="@+id/buttonZero"
-            app:layout_constraintTop_toBottomOf="@+id/buttonThree" />
-
-        <Button
-            android:id="@+id/buttonFour"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:text="4"
-            android:textSize="20sp"
-            app:layout_constraintRight_toLeftOf="@+id/buttonFive"
-            app:layout_constraintTop_toBottomOf="@+id/buttonSeven" />
-
-        <Button
-            android:id="@+id/buttonSix"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="6"
-            android:textSize="20sp"
-            app:layout_constraintLeft_toRightOf="@+id/buttonFive"
-            app:layout_constraintTop_toBottomOf="@+id/buttonNine" />
-
-        <Button
-            android:id="@+id/buttonOne"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:text="1"
-            android:textSize="20sp"
-            app:layout_constraintRight_toLeftOf="@+id/buttonTwo"
-            app:layout_constraintTop_toBottomOf="@+id/buttonFour" />
-
-        <Button
-            android:id="@+id/buttonTwo"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            android:text="2"
-            android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonFive" />
-
-        <Button
-            android:id="@+id/buttonThree"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="3"
-            android:textSize="20sp"
-            app:layout_constraintLeft_toRightOf="@+id/buttonTwo"
-            app:layout_constraintTop_toBottomOf="@+id/buttonSix" />
-
-        <Button
-            android:id="@+id/buttonZero"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            android:text="0"
-            android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonTwo" />
-
-        <Button
-            android:id="@+id/buttonDecimal"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:text="."
-            android:textSize="20sp"
-            app:layout_constraintRight_toLeftOf="@+id/buttonZero"
-            app:layout_constraintTop_toBottomOf="@+id/buttonOne" />
-
-        <Button
-            android:id="@+id/buttonFive"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            android:text="5"
-            android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonEight" />
-
-        <Button
-            android:id="@+id/buttonNine"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="9"
-            android:textSize="20sp"
-            app:layout_constraintLeft_toRightOf="@+id/buttonEight"
-            app:layout_constraintTop_toBottomOf="@+id/pendingTab" />
-
-        <Button
-            android:id="@+id/buttonEight"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            android:text="8"
-            android:textSize="20sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pendingTab" />
-
-        <Button
-            android:id="@+id/buttonSeven"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="16dp"
-            android:text="7"
-            android:textSize="20sp"
-            app:layout_constraintRight_toLeftOf="@+id/buttonEight"
-            app:layout_constraintTop_toBottomOf="@+id/pendingTab" />
-
-        <Button
-            android:id="@+id/buttonAPaid"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/color_yellow"
-            android:text="Grace paid"
-            app:layout_constraintTop_toBottomOf="@+id/currentTab"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginLeft="32dp" />
-
-        <Button
-            android:id="@+id/buttonBPaid"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/color_grey"
-            android:text="Ethan paid"
-            app:layout_constraintTop_toBottomOf="@+id/currentTab"
-            android:layout_marginRight="32dp"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewA"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:visibility="@{TabValue.AOwesMoney.get() ? View.VISIBLE : View.GONE}"
-            android:text="Ethan owes money"
-            android:textColor="@color/color_blue"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Grace owes money"
-            android:visibility="@{TabValue.BOwesMoney.get() ? View.VISIBLE : View.GONE}"
-            android:textColor="@color/color_yellow"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/calculator_comment"
-            android:layout_width="340dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
+            android:id="@+id/editText_pendingTab"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginRight="48dp"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:selectAllOnFocus="true"
-            android:maxLines="1"
-            android:imeOptions="actionDone"
-            android:text="Comment"
-            app:layout_constraintHorizontal_bias="0.506"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView_howMuch"
+            app:layout_constraintLeft_toRightOf="@+id/textView_howMuch"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_howMuch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="48dp"
+            android:text="How Much"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/editText_pendingTab"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/textView_forWhom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="For Whom"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@+id/textView_howMuch"
+            app:layout_constraintTop_toBottomOf="@+id/textView_howMuch" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup_forWhom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="48dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintLeft_toLeftOf="@+id/editText_pendingTab"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonZero" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_pendingTab"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginEnd="48dp">
+
+            <RadioButton
+                android:id="@+id/radioButton_forBoth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:text="for both people"
+                android:textSize="16sp"
+                android:buttonTint="@color/color_green"/>
+
+            <RadioButton
+                android:id="@+id/radioButton_forOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:text="for the other"
+                android:textSize="16sp"
+                android:buttonTint="@color/color_green"/>
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="54dp"
+            android:text="Comment"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@+id/textView_howMuch"
+            app:layout_constraintTop_toBottomOf="@+id/textView_forWhom" />
+
+        <EditText
+            android:id="@+id/editText_comment"
+            android:layout_width="140dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:ems="10"
+            android:imeOptions="actionDone"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView_comment"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/editText_pendingTab"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <Button
+            android:id="@+id/buttonEnter"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="140dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="32dp"
+            android:background="@color/color_green"
+            android:elevation="0dp"
+            android:text="Enter"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/editText_comment"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText_comment"
+            android:layout_marginStart="16dp" />
+
+        <Button
+            android:id="@+id/buttonReset"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@color/color_red"
+            android:elevation="0dp"
+            android:text="Reset"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/buttonEnter"
+            app:layout_constraintLeft_toLeftOf="@+id/textView_comment" />
 
     </android.support.constraint.ConstraintLayout>
-</layout>
+
+</android.support.constraint.ConstraintLayout>

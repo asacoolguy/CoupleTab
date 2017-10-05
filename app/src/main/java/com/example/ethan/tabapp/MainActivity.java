@@ -22,13 +22,13 @@ import java.util.logging.Handler;
 
 
 public class MainActivity extends AppCompatActivity {
-    private TabValue tabValue;
+    private double currentTab; // positive if B owes money, negative if A owes money
     private SharedPreferences sharedPref;
     // navigation drawer variables
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
-
+    // sqlite database variables
     private DBManager dbManager;
 
     @Override
@@ -46,10 +46,9 @@ public class MainActivity extends AppCompatActivity {
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         String currentTabValue_default = getResources().getString(R.string.currentTabValue_default);
         // load saved values into tabValue
-        tabValue = new TabValue();
-        String oldCurrentTabValue = sharedPref.getString(getString(R.string.currentTabValue),
+        String savedCurrentTabValue = sharedPref.getString(getString(R.string.currentTabValue),
                 currentTabValue_default);
-        tabValue.loadCurrentTabValue(oldCurrentTabValue);
+        currentTab = Double.parseDouble(savedCurrentTabValue);
 
         // initialize the fragment in position 0 of the navigation drawer, aka the calculator
         loadFragment(savedInstanceState, 0, true);
@@ -57,12 +56,12 @@ public class MainActivity extends AppCompatActivity {
         dbManager = new DBManager(this);
         dbManager.open();
 
-        dbManager.insert(2015, 10, "2015-11-24 5PM", "thanksgiving turkey", 30.0, -1);
-        dbManager.insert(2016, 3, "2016-4-1 10AM", "april fools!", 10.0, 1);
-        dbManager.insert(2016, 11, "2016-12-25 3PM", "xmas", 40.0, 1);
-        dbManager.insert(2017, 8, "2017-9-13 3PM", "flight to europe", 112.0, 1);
-        //dbManager.insert(2017, 9, "2017-10-1 3PM", "gelato", 12.0, 1);
-        //dbManager.insert(2017, 9, "2017-10-3 2PM", "groceries", 23.0, -1);
+        dbManager.insert(2015, 10, "2015-11-24 5PM", "thanksgiving turkey", 30.0, -1, 2);
+        dbManager.insert(2016, 3, "2016-4-1 10AM", "april fools!", 10.0, 1, 2);
+        dbManager.insert(2016, 11, "2016-12-25 3PM", "xmas", 40.0, 1, 2);
+        dbManager.insert(2017, 8, "2017-9-13 3PM", "flight to europe", 112.0, 1, 1);
+        dbManager.insert(2017, 9, "2017-10-1 3PM", "gelato", 12.0, 1, 1);
+        dbManager.insert(2017, 9, "2017-10-3 2PM", "groceries", 23.0, -1, 2);
         Log.d("myTag", "database initial insertion done");
     }
 
@@ -182,15 +181,18 @@ public class MainActivity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    public TabValue GetTabValue(){
-        return tabValue;
+    public double GetCurrentTab(){
+        return currentTab;
     }
 
     public DBManager GetDBManager(){ return dbManager; }
 
-    public void SaveTabValue(){
+    // given the direction-adjusted pendingTab amount, calculate and save the currentTab
+    public void ChangeTabValue(double pendingTab){
+        currentTab = currentTab + pendingTab;
+
         final SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.currentTabValue), tabValue.currentTabString.get());
+        editor.putString(getString(R.string.currentTabValue), String.valueOf(currentTab));
         editor.apply();
     }
 

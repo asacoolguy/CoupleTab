@@ -31,12 +31,23 @@ public class HistoryCursorAdapter extends CursorAdapter {
                 cursor.getColumnIndex(TabEntryDBHelper.COLUMN_NAME_DATETIME)));
         amountTextView.setText("$" + cursor.getString(
                 cursor.getColumnIndex(TabEntryDBHelper.COLUMN_NAME_AMOUNT)));
-        if (cursor.getInt(cursor.getColumnIndex(TabEntryDBHelper.COLUMN_NAME_APAID)) > 0){
-            paidbyTextView.setText("Grace paid");
+        String paidbyString = "";
+        String paidforTarget = "";
+        if (cursor.getInt(cursor.getColumnIndex(TabEntryDBHelper.COLUMN_NAME_WHOPAID)) > 0){
+            paidbyString = "Grace paid";
+            paidforTarget = "Ethan";
         }
         else{
-            paidbyTextView.setText("Ethan paid");
+            paidbyString = "Ethan paid";
+            paidforTarget = "Grace";
         }
+        if (cursor.getInt(cursor.getColumnIndex(TabEntryDBHelper.COLUMN_NAME_FORBOTH)) > 1){
+            paidbyString += " for both";
+        }
+        else{
+            paidbyString += " for " + paidforTarget;
+        }
+        paidbyTextView.setText(paidbyString);
         commentTextView.setText(cursor.getString(
                 cursor.getColumnIndex(TabEntryDBHelper.COLUMN_NAME_COMMENT)));
     }

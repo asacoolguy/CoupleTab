@@ -22,7 +22,8 @@ public class TabEntryDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NAME_MONTH = "month";
     public static final String COLUMN_NAME_AMOUNT = "amount";
     public static final String COLUMN_NAME_COMMENT = "comment";
-    public static final String COLUMN_NAME_APAID = "apaid";
+    public static final String COLUMN_NAME_WHOPAID = "who_paid";
+    public static final String COLUMN_NAME_FORBOTH = "for_both";
 
     public TabEntryDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,7 +45,8 @@ public class TabEntryDBHelper extends SQLiteOpenHelper {
                     COLUMN_NAME_DATETIME + " TEXT," +
                     COLUMN_NAME_AMOUNT + " FLOAT," +
                     COLUMN_NAME_COMMENT + " TEXT," +
-                    COLUMN_NAME_APAID + " INTEGER)";
+                    COLUMN_NAME_WHOPAID + " INTEGER," +
+                    COLUMN_NAME_FORBOTH + " INTEGER)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;

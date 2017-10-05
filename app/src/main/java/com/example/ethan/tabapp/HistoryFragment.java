@@ -17,9 +17,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.example.ethan.tabapp.databinding.HistoryFragmentBinding;
-
 import java.sql.Array;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -120,7 +117,8 @@ public class HistoryFragment extends Fragment {
                 TabEntryDBHelper.COLUMN_NAME_DATETIME,
                 TabEntryDBHelper.COLUMN_NAME_AMOUNT,
                 TabEntryDBHelper.COLUMN_NAME_COMMENT,
-                TabEntryDBHelper.COLUMN_NAME_APAID
+                TabEntryDBHelper.COLUMN_NAME_WHOPAID,
+                TabEntryDBHelper.COLUMN_NAME_FORBOTH
         };
         String selection = TabEntryDBHelper.COLUMN_NAME_YEAR + " = ? AND " +
                 TabEntryDBHelper.COLUMN_NAME_MONTH + " = ?";

@@ -37,7 +37,8 @@ public class DBManager {
         databaseOpened = false;
     }
 
-    public void insert(int year, int month, String dateTime, String comment, double amount, int APaid){
+    public void insert(int year, int month, String dateTime, String comment, double amount,
+                       int whoPaid, int forBoth){
         if (databaseOpened){
             ContentValues value = new ContentValues();
             value.put(dbHelper.COLUMN_NAME_YEAR, year);
@@ -45,10 +46,9 @@ public class DBManager {
             value.put(dbHelper.COLUMN_NAME_DATETIME, dateTime);
             value.put(dbHelper.COLUMN_NAME_COMMENT, comment);
             value.put(dbHelper.COLUMN_NAME_AMOUNT, amount);
-            value.put(dbHelper.COLUMN_NAME_APAID, APaid);
+            value.put(dbHelper.COLUMN_NAME_WHOPAID, whoPaid);
+            value.put(dbHelper.COLUMN_NAME_FORBOTH, forBoth);
             database.insert(dbHelper.TABLE_NAME, null, value);
-
-            Log.d("myTag", "inserting with dbmanager, month is " + month + ", comment is " + comment);
         }
     }
 
