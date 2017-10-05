@@ -5,7 +5,8 @@
     <string name="currentTabValue">currentTabValue</string>
     <string name="currentTabValue_default">0</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="context_menu_delete">Delete selected item(s)</string>
+    <string name="floating_menu_delete">Delete selected entry</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string-array name="navigation_drawer_items">

@@ -8,9 +8,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,36 +35,15 @@ import java.util.List;
  */
 
 public class HistoryFragment extends Fragment {
-    private Cursor entryCursor;
     private HistoryCursorAdapter cursorAdapter;
     private ArrayList<Integer> allYears;
     private ArrayList<String> allMonths;
+    private Spinner spinner_year, spinner_month;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("myTag", "starting on Create View");
         View view = inflater.inflate(R.layout.history_fragment, container, false);
-
-        int latestYear = 0;
-        int latestMonth = 0;
-
-        // populate spinners with available years and months
-        allYears = new ArrayList<Integer>();
-        findAllYears();
-        latestYear = allYears.get(0);
-
-        allMonths = new ArrayList<String>();
-        findAllMonths(latestYear);
-        latestMonth = convertMonthToInteger(allMonths.get(0));
-
-        // populate the history listview with entries using the current year and month
-        entryCursor = findEntries(latestYear, latestMonth);
-
-        // populate spinners with avaliable months based on the chosen year
-
-        Log.d("myTag", "finishing on Create View");
-
 
         return view;
     }
@@ -68,19 +53,44 @@ public class HistoryFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // this is moved here because fragments can only access items inside after view inflation
-        ListView listView = (ListView) getActivity().findViewById(R.id.history_listview);
-        final Spinner spinner_year = (Spinner) getActivity().findViewById(R.id.spinner_year);
-        final Spinner spinner_month = (Spinner) getActivity().findViewById(R.id.spinner_month);
+        ListView history_listview = (ListView) getActivity().findViewById(R.id.history_listview);
+        registerForContextMenu(history_listview);
+
+        spinner_year = (Spinner) getActivity().findViewById(R.id.spinner_year);
+        spinner_month = (Spinner) getActivity().findViewById(R.id.spinner_month);
         Button button_filter = (Button) getActivity().findViewById(R.id.button_filter);
 
-        cursorAdapter = new HistoryCursorAdapter(getActivity(), entryCursor, 0);
-        listView.setAdapter(cursorAdapter);
+        int latestYear = 0;
+        int latestMonth = 0;
+        // find all the avaliable years and months as well as the latest entries
+        allYears = new ArrayList<Integer>();
+        findAllYears();
+        if (allYears.size() > 0) {
+            latestYear = allYears.get(0);
+        }
+
+        allMonths = new ArrayList<String>();
+        findAllMonths(latestYear);
+        if (allMonths.size() > 0) {
+            latestMonth = convertMonthToInteger(allMonths.get(0));
+        }
+
+        // populate the Listview with entries from the current/latest year/month
+        cursorAdapter = new HistoryCursorAdapter(
+                getActivity(), findEntries(latestYear, latestMonth), 0);
+        history_listview.setAdapter(cursorAdapter);
+
+        // populate options for the year spinner
         ArrayAdapter<Integer> spinnerYearAdapter = new ArrayAdapter<Integer>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, allYears);
-
         spinner_year.setAdapter(spinnerYearAdapter);
+
+        // populate options for the month spinner
         final ArrayAdapter<String> spinnerMonthAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_spinner_dropdown_item, allMonths);
+        spinner_month.setAdapter(spinnerMonthAdapter);
+        spinner_month.setSelection(0);
+
         // update the items in spinner_month based on what's selected in spinner_year
         spinner_year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -95,19 +105,40 @@ public class HistoryFragment extends Fragment {
                 // do nothing
             }
         });
-
-        spinner_month.setAdapter(spinnerMonthAdapter);
-        spinner_month.setSelection(0);
-
+        // when filter button is clicked, update the listview with entries from the selected times
         button_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int year = (int)spinner_year.getSelectedItem();
-                int month = convertMonthToInteger(String.valueOf(spinner_month.getSelectedItem()));
-                cursorAdapter.changeCursor(findEntries(year, month));
+                updateHistoryListView();
             }
         });
+    }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.history_floating_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.floating_menu_delete:
+                // re-adjust current tab to reflect the entry being deleted
+                double pendingAmount = findPendingAmount((int)info.id);
+                ((MainActivity)getActivity()).ChangeTabValue(-1 * pendingAmount);
+                ((MainActivity)getActivity()).GetDBManager().delete((int)info.id);
+                updateHistoryListView();
+                Toast.makeText(getActivity(), "Entry deleted. $" +
+                        String.valueOf(Math.abs(pendingAmount)) +
+                        " returned to the tab.",Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     // helper function that finds all entries in a given year and month
@@ -134,6 +165,29 @@ public class HistoryFragment extends Fragment {
         return c;
     }
 
+    // helper function that finds the adjusted pending amount of an entry given its id
+    private double findPendingAmount(int id){
+        String[] projection = {
+                TabEntryDBHelper.COLUMN_NAME_AMOUNT,
+                TabEntryDBHelper.COLUMN_NAME_WHOPAID,
+                TabEntryDBHelper.COLUMN_NAME_FORBOTH
+        };
+        String selection = TabEntryDBHelper._ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+        Cursor c = ((MainActivity) getActivity()).GetDBManager().query(
+                TabEntryDBHelper.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+        c.moveToFirst();
+        double pendingAmount = c.getDouble(c.getColumnIndexOrThrow(TabEntryDBHelper.COLUMN_NAME_AMOUNT));
+        int pendingDirection = c.getInt(c.getColumnIndexOrThrow(TabEntryDBHelper.COLUMN_NAME_WHOPAID));
+        int pendingFactor = c.getInt(c.getColumnIndexOrThrow(TabEntryDBHelper.COLUMN_NAME_FORBOTH));
+        return pendingAmount * pendingDirection / pendingFactor;
+    }
 
     // helper function that finds all years with entries
     private void findAllYears(){
@@ -185,6 +239,13 @@ public class HistoryFragment extends Fragment {
             }
         }
         monthCursor.close();
+    }
+
+    // helper function that updates the history listview with the latest variables
+    private void updateHistoryListView(){
+        int year = (int)spinner_year.getSelectedItem();
+        int month = convertMonthToInteger(String.valueOf(spinner_month.getSelectedItem()));
+        cursorAdapter.changeCursor(findEntries(year, month));
     }
 
     static public String convertMonthToString(int month){

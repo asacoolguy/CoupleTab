@@ -1,5 +1,6 @@
 package com.example.ethan.tabapp;
 
+import android.arch.persistence.room.Update;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -27,7 +28,7 @@ public class DBManager {
     public DBManager open() throws SQLException{
         dbHelper = new TabEntryDBHelper(context);
         database = dbHelper.getWritableDatabase();
-        dbHelper.onUpgrade(database,0,1);
+        //dbHelper.onUpgrade(database,0,1);
         databaseOpened = true;
         return this;
     }
@@ -61,6 +62,18 @@ public class DBManager {
         else{
             return null;
         }
+    }
+
+    public void delete(int id){
+        if (databaseOpened){
+            // Define 'where' part of query.
+            String selection = TabEntryDBHelper._ID + " = ?";
+            // Specify arguments in placeholder order.
+            String[] selectionArgs = {String.valueOf(id)};
+            // Issue SQL statement.
+            database.delete(TabEntryDBHelper.TABLE_NAME, selection, selectionArgs);
+        }
+
     }
 
 }
